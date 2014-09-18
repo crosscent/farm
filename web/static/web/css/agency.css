@@ -781,6 +781,10 @@ section#registration .text-danger {
     color: #e74c3c;
 }
 
+section#registration .form-group label {
+    color: white;
+}
+
 footer {
     padding: 25px 0;
     text-align: center;

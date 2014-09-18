@@ -9,9 +9,10 @@ class UserProfile(models.Model):
 
     # The additional attributes we wish to include.
     location = models.CharField(max_length=100)
-    position = models.CharField(max_length=100)
-    map_lon = models.CharField(max_length=25)
-    map_lat = models.CharField(max_length=25)
+    position = models.IntegerField(null=True)
+    company = models.CharField(max_length=100)
+    map_lon = models.FloatField(null=True)
+    map_lat = models.FloatField(null=True)
 
     # Override the __unicode__() method to return out something meaningful!
     def __unicode__(self):

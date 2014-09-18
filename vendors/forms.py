@@ -2,6 +2,7 @@ from django import forms
 from vendors.models import UserProfile
 from django.contrib.auth.models import User
 
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
@@ -19,7 +20,10 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('location', 'position')
 
-class GoogleMapForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ('map_lon', 'map_lat')
+class ProfileUpdateForm(forms.Form):
+    first_name = forms.CharField(max_length=50, required=False)
+    last_name = forms.CharField(max_length=50, required=False)
+    email = forms.CharField(max_length=100, required=True)
+    company = forms.CharField(max_length=100, required=False)
+    map_lat = forms.FloatField()
+    map_lon = forms.FloatField()

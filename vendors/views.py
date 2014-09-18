@@ -1,10 +1,13 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from vendors.forms import UserForm, UserProfileForm, GoogleMapForm
+from vendors.forms import UserForm, UserProfileForm, ProfileUpdateForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from vendors.models import UserProfile
+
 
 
 def registration(request):
@@ -118,14 +121,40 @@ def profile(request):
 
     # If it's a HTTP POST, we will be processing the data
     if request.method == 'POST':
-        return HttpResponse("added!")
+        # Attemp to grab information from the raw form information.
+        # Note we make use of both UserForm and UserProfileForm.
+        profileupdate_form = ProfileUpdateForm(data=request.POST)
+
+        # If the two forms are valid...
+        if profileupdate_form.is_valid():
+            # Save the user's form data to the database.
+            user = User.objects.get(username=request.user)
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
+            user.save()
+            try:
+                profile = UserProfile.objects.get(user_id=request.user.id)
+                profile.company = request.POST['company']
+                profile.map_lon = request.POST['map_lon']
+                profile.map_lat = request.POST['map_lat']
+                profile.save()
+            except UserProfile.DoesNotExist:
+                newprofile = UserProfile(user_id=request.user.id, company=request.POST['company'], map_lon=request.POST['map_lon'], map_lat=request.POST['map_lat'])
+                newprofile.save()
+
+
+            return HttpResponse("Thanks!")
+        else:
+            return HttpResponse(profileupdate_form.errors)
 
     else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
-
+        profileupdate_form = ProfileUpdateForm()
+        try:
+            profile = UserProfile.objects.get(user_id=request.user.id)
+        except UserProfile.DoesNotExist:
+            profile = None
     # Render the template
     return render_to_response(
         'web/profile.html',
-        {'user_form': user_form, 'profile_form': profile_form, 'edited': edited}, context
+        {'form': profileupdate_form, 'profile': profile, 'edited': edited}, context
     )

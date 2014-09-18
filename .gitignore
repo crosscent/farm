@@ -15,6 +15,7 @@ $RECYCLE.BIN/
 *.msp
 *.workspace.xml
 settings.py
+*.pyc
 
 # =========================
 # Operating System Files
