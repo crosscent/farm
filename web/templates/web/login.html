@@ -1,0 +1,39 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block body_block %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Login</h2>
+                    <h3 class="section-subheading text-muted">Welcome Back!</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <form name="login" id="login_form" method="post" action="/login/" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="username" id=""  name="username" type="" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="password" id=""  name="password" type="password" />
+                                </div>
+                                <p class="help-block text-danger" align="right"><a href="/registration">Don't have an account? Register now!</a></p>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 text-center">
+                                <div id="success"></div>
+                                <button type="submit" class="btn btn-xl" value="submit">Login!</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

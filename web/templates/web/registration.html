@@ -1,0 +1,76 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block body_block %}
+
+    {% if registered %}
+     <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Register</h2>
+                    <h3 class="section-subheading text-muted">Thanks for registering!</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Register</h2>
+                    <h3 class="section-subheading text-muted">Please tell us a lil bit about yourself.</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <form name="sentMessage" id="user_form" method="post" action="/registration/" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                {% for field in user_form %}
+                                    {% if field.name = "password" %}
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="{{ field.name }} {{ field.help_text }}" id="{{ field.name }}"  name="{{ field.name }}" type="password" />
+                                            <p class="help-block text-danger">{{ field.errors.as_text }}</p>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="{{ field.name }} {{ field.help_text }}" id="{{ field.name }}"  name="{{ field.name }}" type="{{ field.type }}" />
+                                            <p class="help-block text-danger">{{ field.errors.as_text }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                             <div class="col-md-6">
+                                 {% for field in profile_form %}
+                                    {% if field.name = "position" %}
+                                        <div class="form-group">
+                                            <select class="form-control" id="{{ field.name }}" name="{{ field.name }}">
+                                                {% for id, name in profile_form.fields.position.choices %}
+                                                    <option value="{{ id }}">{{ name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    {% else %}
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="{{ field.name }} {{ field.help_text }}" id="{{ field.name }}"  name="{{ field.name }}" type="{{ field.type }}" />
+                                            <p class="help-block text-danger">{{ field.errors.as_text }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 text-center">
+                                <div id="success"></div>
+                                <button type="submit" class="btn btn-xl" value="submit">Register</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+{% endblock %}
